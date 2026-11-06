@@ -1,0 +1,209 @@
+﻿@model IEnumerable<Glasses.Models.SanPham>
+
+<header class="header">
+    <div class="container header_container">
+        <div class="header_filter">
+            <div class="header_filter_box">
+                <a href="#" class="header_filter_link">Kính Mát Nữ</a>
+                <a href="#" class="header_filter_link">Kính Mát Nam</a>
+                <a href="#" class="header_filter_link">Kính Unisex</a>
+                <a href="#" class="header_filter_link">Gọng Kính Cận</a>
+                <a href="#" class="header_filter_link">Tròng Kính</a>
+                <a href="#" class="header_filter_link">Kính Chống Ánh Sáng Xanh</a>
+                <a href="#" class="header_filter_link">Kính Thể Thao</a>
+                <a href="#" class="header_filter_link">Kính Trẻ Em</a>
+                <a href="#" class="header_filter_link">Phụ Kiện (Hộp, Nước rửa)</a>
+            </div>
+        </div>
+        <img src="~/image/banner.png" alt="Banner bộ sưu tập kính mắt mới nhất" class="header_img" />
+    </div>
+</header>
+
+<section class="section">
+    <div class="container">
+        <div class="section_category">
+            <p class="section_category_p">HÔM NAY</p>
+        </div>
+        <div class="section_header">
+            <h3 class="section_title">GIẢM GIÁ ĐẶC BIỆT</h3>
+            <p id="demo"></p>
+        </div>
+
+        <!-- Swiper -->
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        string imgSrc = string.IsNullOrEmpty(item.HinhAnh)
+                        ? Url.Content("~/image/items/default.png")
+                        : (item.HinhAnh.StartsWith("http://") || item.HinhAnh.StartsWith("https://")
+                        ? item.HinhAnh
+                        : Url.Content("~/image/items/" + item.HinhAnh));
+
+                        <div class="swiper-slide">
+                            <div class="card">
+                                <div class="card_top">
+                                    <img src="@imgSrc" alt="@item.TenSanPham" class="card_img" />
+
+                                    @if (item.PhanTramGiam > 0)
+                                    {
+                                        <div class="card_tag">-@item.PhanTramGiam%</div>
+                                    }
+
+                                    <div class="card_top_icons">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="card_top_icon">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="card_top_icon">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="card_body">
+                                    <h3 class="card_title">@item.TenSanPham</h3>
+
+                                    <p class="card_price">
+                                        @string.Format("{0:N0}₫", item.GiaDaGiam)
+                                        @if (item.PhanTramGiam > 0)
+                                        {
+                                            <del style="font-size: 0.8em; color: #888; margin-left: 6px;">
+                                                @string.Format("{0:N0}₫", item.Gia)
+                                            </del>
+                                        }
+                                    </p>
+
+                                    <div class="card_ratings">
+                                        <div class="card_stars">★★★★★</div>
+                                        <p class="card_rating_numbers">(5.0)</p>
+                                    </div>
+
+                                    <button class="add_to_cart"
+                                            data-id="@item.MaSanPham"
+                                            data-title="@item.TenSanPham"
+                                            data-image="@imgSrc"
+                                            data-price="@item.GiaDaGiam">
+                                        Thêm vào giỏ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="swiper-slide">
+                        <p class="text-center">Chưa có sản phẩm giảm giá nào.</p>
+                    </div>
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <div class="container_btn">
+            <a href="/Product/Index" class="container_btn_a">XEM TẤT CẢ SẢN PHẨM</a>
+        </div>
+    </div>
+</section>
+
+<!-- DANH MỤC PHỔ BIẾN -->
+<section class="section">
+    <div class="container">
+        <div class="section_category">
+            <p class="section_category_p">DANH MỤC</p>
+        </div>
+        <div class="section_header">
+            <h3 class="section_title">DANH MỤC PHỔ BIẾN</h3>
+        </div>
+        <div class="categories">
+            <div class="category">
+                <img src="~/image/icons/kinhmatnu.png" alt="Kính mát nữ" class="category_icon" />
+                <p class="category_name">Kính Mát Nữ</p>
+            </div>
+            <div class="category">
+                <img src="~/image/icons/kinhmatnam.png" alt="Kính mát nam" class="category_icon" />
+                <p class="category_name">Kính Mát Nam</p>
+            </div>
+            <div class="category">
+                <img src="~/image/icons/gongkinh.png" alt="Gọng kính" class="category_icon" />
+                <p class="category_name">Gọng Kính</p>
+            </div>
+            <div class="category">
+                <img src="~/image/icons/kinhthethao.png" alt="Kính thể thao" class="category_icon" />
+                <p class="category_name">Kính Thể Thao</p>
+            </div>
+            <div class="category">
+                <img src="~/image/icons/trongkinh.png" alt="Tròng kính" class="category_icon" />
+                <p class="category_name">Tròng Kính</p>
+            </div>
+            <div class="category">
+                <img src="~/image/icons/phukien.jpg" alt="Phụ kiện" class="category_icon" />
+                <p class="category_name">Phụ Kiện</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BANNER SẢN PHẨM NỔI BẬT -->
+<section class="section">
+    <div class="container">
+        <div class="trending">
+            <div class="trending_content">
+                <p class="trending_p">Sản Phẩm Nổi Bật</p>
+                <h2 class="trending_title">Nâng Tầm Phong Cách Cùng Kính Mát Thời Trang</h2>
+                <a href="/Product/Index" class="trending_btn">Khám Phá Ngay!</a>
+            </div>
+            <img src="~/image/kinhthoitrang.png" alt="Bộ sưu tập kính mát thời trang cao cấp" class="trending_img" />
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function updateHeaderCartBadge() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            let cartBadge = document.querySelector('.header_cart_count, #cartCountBadge, .cart-count');
+            if (cartBadge) {
+                cartBadge.textContent = totalCount;
+                cartBadge.style.display = totalCount > 0 ? 'inline-block' : 'none';
+            }
+        }
+
+        updateHeaderCartBadge();
+
+        document.querySelectorAll('.add_to_cart').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const id = this.getAttribute('data-id');
+                const title = this.getAttribute('data-title');
+                const image = this.getAttribute('data-image');
+                const price = parseFloat(this.getAttribute('data-price')) || 0;
+
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                let existingIndex = cart.findIndex(item => item.id === id);
+                if (existingIndex !== -1) {
+                    cart[existingIndex].quantity += 1;
+                } else {
+                    cart.push({
+                        id: id,
+                        title: title,
+                        image: image,
+                        price: price,
+                        quantity: 1
+                    });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                updateHeaderCartBadge();
+
+                alert(`Đã thêm "${title}" vào giỏ hàng thành công!`);
+            });
+        });
+    });
+</script>

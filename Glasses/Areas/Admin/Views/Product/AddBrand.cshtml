@@ -1,0 +1,72 @@
+﻿@model Glasses.Models.ThuongHieu
+
+@{
+    ViewData["Title"] = "Thêm thương hiệu";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-content-wrap">
+    <!-- Tiêu đề & Breadcrumb -->
+    <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+        <h3>Thêm thương hiệu mới</h3>
+        <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+            <li>
+                <a href="/Admin/Home/Index">
+                    <div class="text-tiny">Tổng quan</div>
+                </a>
+            </li>
+            <li>
+                <i class="icon-chevron-right"></i>
+            </li>
+            <li>
+                <a href="/Admin/Product/BrandHienCo">
+                    <div class="text-tiny">Thương hiệu</div>
+                </a>
+            </li>
+            <li>
+                <i class="icon-chevron-right"></i>
+            </li>
+            <li>
+                <div class="text-tiny">Thêm mới</div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Khối Form nhập liệu -->
+    <div class="wg-box">
+        <form class="form-new-product form-style-1"
+              action="/Admin/Product/AddBrand"
+              method="POST"
+              data-ajax="false">
+
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Mã thương hiệu -->
+            <fieldset class="name">
+                <div class="body-title">Mã thương hiệu <span class="tf-color-1">*</span></div>
+                <input class="flex-grow" type="text"
+                       asp-for="MaThuongHieu"
+                       placeholder="Nhập mã thương hiệu (VD: TH01)"
+                       required>
+                <span asp-validation-for="MaThuongHieu" class="text-danger"></span>
+            </fieldset>
+
+            <!-- Tên thương hiệu -->
+            <fieldset class="name">
+                <div class="body-title">Tên thương hiệu <span class="tf-color-1">*</span></div>
+                <input class="flex-grow" type="text"
+                       asp-for="TenThuongHieu"
+                       placeholder="Nhập tên thương hiệu (VD: Ray-Ban, Gucci...)"
+                       required>
+                <span asp-validation-for="TenThuongHieu" class="text-danger"></span>
+            </fieldset>
+
+            <!-- Nút bấm -->
+            <div class="bot flex gap10 justify-end">
+                <button class="tf-button w208" type="submit">Lưu thương hiệu</button>
+                <a href="/Admin/Product/BrandHienCo" class="tf-button style-2 w208 text-center">Hủy bỏ</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cửa hàng kính</title>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <!-- ==================== TOP NAV ==================== -->
+    <div class="top_nav">
+        <div class="container top_nav_container">
+            <div class="top_nav_wrapper">
+                <p class="tap_nav_p">
+                    Khuyến mãi mùa hè cho tất cả các dòng kính mát và Miễn phí giao hàng - GIẢM 50%!
+                </p>
+                <a asp-controller="Home" asp-action="Index" class="top_nav_link">SHOP NOW</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN NAV ==================== -->
+    <nav class="nav">
+        <div class="container nav_container">
+            <a asp-controller="Home" asp-action="Index" class="nav_logo">GLASSES</a>
+
+            <ul class="nav_list">
+                <li class="nav_item"><a asp-controller="Home" asp-action="Index" class="nav_link">Trang chủ</a></li>
+                <li class="nav_item"><a href="#" class="nav_link">Giới thiệu</a></li>
+                <li class="nav_item"><a href="#" class="nav_link">Liên hệ</a></li>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <li class="nav_item">
+                        <a href="#" class="nav_link nav_user_greeting" title="@User.Identity.Name">
+                            @User.Identity.Name
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav_item">
+                        <a asp-controller="Account" asp-action="Register" class="nav_link">Đăng ký</a>
+                    </li>
+                }
+            </ul>
+
+            <div class="nav_items">
+                <form action="#" class="nav_form">
+                    <input type="text" class="nav_input" placeholder="search here...." />
+                    <img src="~/image/search.png" alt="" class="nav_search" />
+                </form>
+                <img src="~/image/heart.png" alt="" class="nav_heart" />
+                <a asp-controller="Home" asp-action="Cart">
+                    <img src="~/image/cart.png" alt="" class="nav_cart" />
+                </a>
+
+                @if (User.Identity?.IsAuthenticated != true)
+                {
+                    <a asp-controller="Account" asp-action="Login" class="nav_auth_btn">Đăng nhập</a>
+                }
+                else
+                {
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="nav_logout_form">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="nav_auth_btn nav_auth_btn--outline">Đăng xuất</button>
+                    </form>
+                }
+            </div>
+
+            <span class="hamburger">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </span>
+        </div>
+    </nav>
+
+    <!-- ==================== MOBILE NAV ==================== -->
+    <nav class="mobile_nav mobile_nav_hide">
+        <ul class="mobile_nav_list">
+            <li class="mobile_nav_item"><a asp-controller="Home" asp-action="Index" class="mobile_nav_link">Trang chủ</a></li>
+            <li class="mobile_nav_item"><a href="#" class="mobile_nav_link">Giới thiệu</a></li>
+            <li class="mobile_nav_item"><a href="#" class="mobile_nav_link">Liên hệ</a></li>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <li class="mobile_nav_item">
+                    <span class="mobile_nav_link">@User.Identity.Name</span>
+                </li>
+                <li class="mobile_nav_item">
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="mobile_nav_link mobile_nav_logout">Đăng xuất</button>
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li class="mobile_nav_item">
+                    <a asp-controller="Account" asp-action="Register" class="mobile_nav_link">Đăng ký</a>
+                </li>
+                <li class="mobile_nav_item">
+                    <a asp-controller="Account" asp-action="Login" class="mobile_nav_link">Đăng nhập</a>
+                </li>
+            }
+            <li class="mobile_nav_item"><a asp-controller="Home" asp-action="Cart" class="mobile_nav_link">Giỏ hàng</a></li>
+        </ul>
+    </nav>
+
+    <!-- ==================== BODY ==================== -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container footer_container">
+            <div class="footer_item">
+                <a asp-controller="Home" asp-action="Index" class="footer_logo">GLASSES</a>
+                <div class="footer_p">
+                    Chuyên cung cấp các mẫu mắt kính thời trang, gọng kính cận và phụ kiện chất lượng cao.
+                    Mang đến cho bạn tầm nhìn hoàn hảo và phong cách tự tin.
+                </div>
+            </div>
+
+            <div class="footer_item">
+                <h3 class="footer_item_titl">Liên Hệ</h3>
+                <ul class="footer_list">
+                    <li class="li footer_list_item">Trường Đại học Công Thương TP.HCM</li>
+                    <li class="li footer_list_item">cskh@glasses.vn</li>
+                    <li class="li footer_list_item">090 123 4567</li>
+                    <li class="li footer_list_item">093 987 6543</li>
+                </ul>
+            </div>
+
+            <div class="footer_item">
+                <h3 class="footer_item_titl">Tài Khoản</h3>
+                <ul class="footer_list">
+                    <li class="li footer_list_item"><a asp-controller="Account" asp-action="Profile">Trang cá nhân</a></li>
+
+                    @if (User.Identity?.IsAuthenticated != true)
+                    {
+                        <li class="li footer_list_item">
+                            <a asp-controller="Account" asp-action="Login">Đăng nhập</a> /
+                            <a asp-controller="Account" asp-action="Register">Đăng ký</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="li footer_list_item">
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="footer_logout_btn">Đăng xuất</button>
+                            </form>
+                        </li>
+                    }
+
+                    <li class="li footer_list_item"><a asp-controller="Home" asp-action="Cart">Giỏ hàng</a></li>
+                    <li class="li footer_list_item"><a asp-controller="Home" asp-action="Index">Cửa hàng</a></li>
+                </ul>
+            </div>
+
+            <div class="footer_item">
+                <h3 class="footer_item_titl">Chính Sách</h3>
+                <ul class="footer_list">
+                    <li class="li footer_list_item"><a href="#">Chính sách bảo mật</a></li>
+                    <li class="li footer_list_item"><a href="#">Chính sách đổi trả</a></li>
+                    <li class="li footer_list_item"><a href="#">Câu hỏi thường gặp (FAQ)</a></li>
+                    <li class="li footer_list_item"><a href="#">Hướng dẫn đo mắt</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer_bottom">
+            <div class="container footer_bottom_container">
+                <p class="footer_copy">Bản quyền © 2026 GLASSES. Đã đăng ký bản quyền.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="~/js/app.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

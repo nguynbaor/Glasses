@@ -1,0 +1,60 @@
+﻿@model Glasses.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng Ký Thành Viên";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<section class="section">
+    <div class="auth_container">
+        <div class="auth_img">
+            <img src="~/image/poster.jpg" alt="Đăng ký" class="auth_image" />
+        </div>
+        <div class="auth_content">
+            <form asp-action="Register" asp-controller="Account" method="post" class="auth_form">
+                @Html.AntiForgeryToken()
+
+                <h2 class="form_title">ĐĂNG KÝ</h2>
+                <p class="auth_p">Vui lòng nhập thông tin của bạn bên dưới</p>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form_group">
+                    <input asp-for="HoVaTen" placeholder="Họ và tên" class="form_input" />
+                    <span asp-validation-for="HoVaTen" class="text-danger"></span>
+                </div>
+
+                <div class="form_group">
+                    <input asp-for="Email" type="email" placeholder="Email" class="form_input" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form_group">
+                    <input asp-for="SoDienThoai" placeholder="Số điện thoại" class="form_input" />
+                    <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                </div>
+
+                <div class="form_group form_pass">
+                    <input asp-for="Password" type="password" placeholder="Mật khẩu" class="form_input" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form_group form_pass">
+                    <input asp-for="ConfirmPassword" type="password" placeholder="Xác nhận mật khẩu" class="form_input" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form_group">
+                    <button type="submit" class="form_btn">Đăng ký</button>
+                </div>
+
+                <div class="form_group">
+                    <span>Đã có tài khoản? <a asp-action="Login" class="form_auth_link">Đăng nhập</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

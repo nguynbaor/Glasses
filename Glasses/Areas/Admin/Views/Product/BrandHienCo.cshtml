@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Glasses.Models.ThuongHieu>
+
+@{
+    ViewData["Title"] = "Thương hiệu hiện có";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    int stt = 1;
+}
+
+<div class="main-content-wrap">
+    <!-- Tiêu đề & Breadcrumb -->
+    <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+        <h3>Thương hiệu hiện có</h3>
+        <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+            <li>
+                <a href="/Admin/Home/Index">
+                    <div class="text-tiny">Tổng quan</div>
+                </a>
+            </li>
+            <li>
+                <i class="icon-chevron-right"></i>
+            </li>
+            <li>
+                <div class="text-tiny">Thương hiệu</div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Khối tìm kiếm & Nút thêm mới -->
+    <div class="wg-box">
+        <div class="flex items-center justify-between gap10 flex-wrap">
+            <div class="wg-filter flex-grow">
+                <form class="form-search" method="get" action="/Admin/Product/BrandHienCo">
+                    <fieldset class="name">
+                        <input type="text" placeholder="Tìm kiếm thương hiệu..." class="" name="search"
+                               tabindex="2" value="" aria-required="true">
+                    </fieldset>
+                    <div class="button-submit">
+                        <button class="" type="submit"><i class="icon-search"></i></button>
+                    </div>
+                </form>
+            </div>
+            <a class="tf-button style-1 w208" href="/Admin/Product/AddBrand">
+                <i class="icon-plus"></i>Thêm thương hiệu
+            </a>
+        </div>
+
+        <!-- Bảng danh sách thương hiệu -->
+        <div class="wg-table table-all-user">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã TH</th>
+                            <th>Tên thương hiệu</th>
+                            <th>Số sản phẩm</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@(stt++)</td>
+                                    <td>@item.MaThuongHieu</td>
+                                    <td class="pname">
+                                        <div class="name">
+                                            <a href="#" class="body-title-2">@item.TenThuongHieu</a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">
+                                            @(item.SanPhams?.Count ?? 0)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="list-icon-function">
+                                            <a href="/Admin/Product/EditBrand/@item.MaThuongHieu" title="Chỉnh sửa">
+                                                <div class="item edit">
+                                                    <i class="icon-edit-3"></i>
+                                                </div>
+                                            </a>
+                                            <a href="/Admin/Product/DeleteBrand/@item.MaThuongHieu"
+                                               title="Xóa"
+                                               onclick="return confirm('Bạn có chắc chắn muốn xóa thương hiệu này?');">
+                                                <div class="item text-danger delete">
+                                                    <i class="icon-trash-2"></i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">Chưa có dữ liệu thương hiệu.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="divider"></div>
+            <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
+                <div class="text-tiny">
+                    Hiển thị @(Model?.Count() ?? 0) thương hiệu
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

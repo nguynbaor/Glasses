@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Khu vực hiển thị Giỏ hàng -->
+<section class="section">
+    <div class="container">
+        <div class="cart">
+            <div class="cart_header">
+                <p class="cart_header_id">Mã Sản phẩm</p>
+                <p class="cart_header_title">Tên Sản Phẩm</p>
+                <p class="cart_header_image">Hình Ảnh</p>
+                <p class="cart_header_price">Đơn Giá</p>
+                <p class="cart_header_delete">Thao tác</p>
+            </div>
+
+            <div class="cart-items" id="cartItemsContainer">
+
+            </div>
+
+            <div class="cart_summary" style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; padding: 15px 20px; border-radius: 8px;">
+                <h4 style="margin: 0;">Tổng tiền: <span id="cartTotalPrice" style="color: #d9534f; font-weight: bold;">0₫</span></h4>
+                <button id="btnCheckout" class="btn" style="padding: 10px 25px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                    Tiến hành thanh toán
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            renderCart();
+
+            function renderCart() {
+                const container = document.getElementById('cartItemsContainer');
+                const totalPriceEl = document.getElementById('cartTotalPrice');
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                if (cart.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px 0; color: #777;">
+                            <p>Giỏ hàng của bạn đang trống.</p>
+                            <a href="/" style="color: #007bff; text-decoration: underline;">Quay lại mua sắm</a>
+                        </div>`;
+                    if (totalPriceEl) totalPriceEl.textContent = '0₫';
+                    return;
+                }
+
+                let html = '';
+                let grandTotal = 0;
+
+                cart.forEach((item, index) => {
+                    const itemTotal = (item.price || 0) * (item.quantity || 1);
+                    grandTotal += itemTotal;
+
+                    html += `
+                        <div class="cart_item" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee;">
+                            <p class="cart_header_id">${item.id}</p>
+                            <p class="cart_header_title" style="font-weight: 600;">${item.title}</p>
+                            <div class="cart_header_image">
+                                <img src="${item.image}" alt="${item.title}" style="width: 60px; height: 60px; object-fit: contain;" />
+                            </div>
+                            <p class="cart_header_price">${(item.price || 0).toLocaleString('vi-VN')}₫ <span style="font-size: 0.85em; color: #666;">(x${item.quantity || 1})</span></p>
+                            <div class="cart_header_delete">
+                                <button class="btn-remove" data-index="${index}" style="background: #ff4d4f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                                    Xóa
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+                if (totalPriceEl) totalPriceEl.textContent = grandTotal.toLocaleString('vi-VN') + '₫';
+
+                document.querySelectorAll('.btn-remove').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const idx = parseInt(this.getAttribute('data-index'));
+                        removeFromCart(idx);
+                    });
+                });
+            }
+
+            function removeFromCart(index) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                renderCart();
+
+                let cartBadge = document.querySelector('.header_cart_count, #cartCountBadge, .cart-count');
+                if (cartBadge) {
+                    let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    cartBadge.textContent = totalCount;
+                    cartBadge.style.display = totalCount > 0 ? 'inline-block' : 'none';
+                }
+            }
+        });
+    </script>
+}

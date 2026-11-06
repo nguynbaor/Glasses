@@ -1,0 +1,60 @@
+﻿@model Glasses.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng Nhập";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<section class="section">
+    <div class="auth_container">
+        <div class="auth_img">
+            <img src="~/image/poster.jpg" alt="Đăng nhập" class="auth_image" />
+        </div>
+
+        <div class="auth_content">
+            <form asp-action="Login" asp-controller="Account" method="post" class="auth_form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+                <h2 class="form_title">ĐĂNG NHẬP</h2>
+                <p class="auth_p">Vui lòng nhập thông tin của bạn bên dưới</p>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Success"]</div>
+                }
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form_group">
+                    <input asp-for="Email" type="email" placeholder="Email" class="form_input" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form_group form_pass">
+                    <input asp-for="Password" type="password" placeholder="Mật khẩu" class="form_input" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form_group form_group--checkbox">
+                    <input asp-for="RememberMe" type="checkbox" id="rememberMe" />
+                    <label for="rememberMe">Ghi nhớ đăng nhập</label>
+                </div>
+
+                <div class="form_group">
+                    <button type="submit" class="form_btn">Đăng nhập</button>
+                </div>
+
+                <div class="form_group">
+                    <span>
+                        Chưa có tài khoản?
+                        <a asp-action="Register" class="form_auth_link">Đăng ký ngay</a>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
