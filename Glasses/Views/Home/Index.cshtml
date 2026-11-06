@@ -161,6 +161,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const isAuthenticated = @(User.Identity != null && User.Identity.IsAuthenticated ? "true" : "false");
+
         function updateHeaderCartBadge() {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -177,6 +179,12 @@
         document.querySelectorAll('.add_to_cart').forEach(button => {
             button.addEventListener('click', function (e) {
                 e.preventDefault();
+
+                if (!isAuthenticated) {
+                    alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+                    window.location.href = '/Account/Login';
+                    return;
+                }
 
                 const id = this.getAttribute('data-id');
                 const title = this.getAttribute('data-title');
@@ -201,6 +209,10 @@
                 localStorage.setItem('cart', JSON.stringify(cart));
 
                 updateHeaderCartBadge();
+
+                if (typeof window.updateCartBadge === 'function') {
+                    window.updateCartBadge();
+                }
 
                 alert(`Đã thêm "${title}" vào giỏ hàng thành công!`);
             });

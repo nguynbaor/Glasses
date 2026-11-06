@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
+﻿using Glasses.Data;
+using Glasses.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Glasses.Models;
-using Glasses.Data;
+using System.Diagnostics;
 
 namespace Glasses.Controllers
 {
@@ -28,6 +29,7 @@ namespace Glasses.Controllers
             return View(sanPhamGiamGia);
         }
 
+        [Authorize]
         public IActionResult Cart()
         {
             return View();
