@@ -16,13 +16,17 @@ namespace Glasses.Data
         public DbSet<KhachHang> KhachHangs => Set<KhachHang>();
         public DbSet<NhanVien> NhanViens => Set<NhanVien>();
         public DbSet<QuanLy> QuanLies => Set<QuanLy>();
-
+        public DbSet<BienThe> BienThes { get; set; } = null!;
+        public DbSet<GioHang> GioHangs { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ChiTietDonHang>()
                 .HasKey(c => new { c.MaDonHang, c.MaBienThe });
+
+            modelBuilder.Entity<ChiTietGioHang>()
+                .HasKey(c => new { c.MaGioHang, c.MaBienThe });
 
             modelBuilder.Entity<NguoiDung>()
                 .HasIndex(u => u.Email)

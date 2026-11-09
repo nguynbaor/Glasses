@@ -117,30 +117,41 @@
             <h3 class="section_title">DANH MỤC PHỔ BIẾN</h3>
         </div>
         <div class="categories">
-            <div class="category">
+            <!-- 1. Kính Mát Nữ -->
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="DM02" asp-route-mainCategory="Kính Mát Nữ" class="category text-decoration-none">
                 <img src="~/image/icons/kinhmatnu.png" alt="Kính mát nữ" class="category_icon" />
                 <p class="category_name">Kính Mát Nữ</p>
-            </div>
-            <div class="category">
+            </a>
+
+            <!-- 2. Kính Mát Nam -->
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="DM02" class="category text-decoration-none">
                 <img src="~/image/icons/kinhmatnam.png" alt="Kính mát nam" class="category_icon" />
                 <p class="category_name">Kính Mát Nam</p>
-            </div>
-            <div class="category">
+            </a>
+
+            <!-- 3. Gọng Kính / Kính Cận -->
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="DM01" class="category text-decoration-none">
                 <img src="~/image/icons/gongkinh.png" alt="Gọng kính" class="category_icon" />
                 <p class="category_name">Gọng Kính</p>
-            </div>
-            <div class="category">
+            </a>
+
+            <!-- 4. Kính Thể Thao -->
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="DM02" class="category text-decoration-none">
                 <img src="~/image/icons/kinhthethao.png" alt="Kính thể thao" class="category_icon" />
                 <p class="category_name">Kính Thể Thao</p>
-            </div>
-            <div class="category">
+            </a>
+
+            <!-- 5. Tròng Kính -->
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="DM03" class="category text-decoration-none">
                 <img src="~/image/icons/trongkinh.png" alt="Tròng kính" class="category_icon" />
                 <p class="category_name">Tròng Kính</p>
-            </div>
-            <div class="category">
+            </a>
+
+            <!-- 6. Phụ Kiện -->
+            <a asp-controller="Product" asp-action="Index" asp-route-categoryId="DM03" class="category text-decoration-none">
                 <img src="~/image/icons/phukien.jpg" alt="Phụ kiện" class="category_icon" />
                 <p class="category_name">Phụ Kiện</p>
-            </div>
+            </a>
         </div>
     </div>
 </section>

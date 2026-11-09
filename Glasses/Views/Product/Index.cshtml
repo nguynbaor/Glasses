@@ -1,0 +1,209 @@
+﻿@model Glasses.Models.ViewModels.ProductListViewModel
+
+@{
+    ViewData["Title"] = Model.CurrentCategoryName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="header page-header py-4 bg-light mb-4">
+    <div class="container">
+        <h2 class="fw-bold mb-2 text-uppercase" style="font-size: 2rem;">
+            @Model.CurrentCategoryName
+        </h2>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 m-0" style="font-size: 1rem;">
+                <li class="breadcrumb-item">
+                    <a href="/" class="text-secondary text-decoration-none">Trang chủ</a>
+                </li>
+
+                <li class="breadcrumb-item text-secondary">
+                    <a asp-controller="Product" asp-action="Index" class="text-secondary text-decoration-none">
+                        @Model.MainCategoryName
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">
+                    @Model.CurrentCategoryName
+                </li>
+            </ol>
+        </nav>
+    </div>
+</header>
+
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 pe-lg-4 mb-4">
+                <div class="sidebar-float-wrapper p-4">
+                    @await Component.InvokeAsync("CategorySidebar", new {
+                    activeCategoryId = Model.ActiveCategoryId,
+                                        minPrice = Model.MinPrice,
+                                        maxPrice = Model.MaxPrice
+                                        })
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-8">
+                <div class="d-flex justify-content-between align-items-center mb-4 filter-header-bar p-3 bg-white rounded shadow-sm">
+                    <p class="text-secondary m-0 fw-medium" style="font-size: 1.05rem;">Hiển thị 1–@Model.Products.Count của @Model.TotalCount kết quả</p>
+
+                    <form method="get" id="sortForm" class="d-inline-block m-0">
+                        <input type="hidden" name="categoryId" value="@Model.ActiveCategoryId" />
+                        <select name="sortBy" class="form-select border-0 bg-light fw-medium" style="width: 210px; font-size: 1rem; padding: 8px 12px;" onchange="this.form.submit()">
+                            <option value="default" selected="@(Model.SelectedSort == "default")">Sắp xếp mặc định</option>
+                            <option value="price_asc" selected="@(Model.SelectedSort == "price_asc")">Giá từ thấp đến cao</option>
+                            <option value="price_desc" selected="@(Model.SelectedSort == "price_desc")">Giá từ cao đến thấp</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 product-grid">
+                    @if (Model.Products.Any())
+                    {
+                        foreach (var item in Model.Products)
+                        {
+                            string imgSrc = string.IsNullOrEmpty(item.HinhAnh)
+                            ? Url.Content("~/image/items/default.png")
+                            : (item.HinhAnh.StartsWith("http") ? item.HinhAnh : Url.Content("~/image/items/" + item.HinhAnh));
+
+                            <div class="col product-item">
+                                <div class="card h-100 border-0 shadow-sm text-center product-card float-hover p-2">
+                                    <div class="product-img-box p-3 d-flex align-items-center justify-content-center" style="height: 220px; background-color: #f9f9f9; border-radius: 8px;">
+                                        <img src="@imgSrc" class="card-img-top img-fluid product-img-float" alt="@item.TenSanPham" style="max-height: 190px; object-fit: contain;" />
+                                    </div>
+
+                                    <div class="d-flex justify-content-center gap-2 my-3">
+                                        <span class="color-dot bg-dark border"></span>
+                                        <span class="color-dot" style="background-color: #d9534f;"></span>
+                                        <span class="color-dot border" style="background-color: #fff;"></span>
+                                    </div>
+
+                                    <div class="card-body p-2 d-flex flex-column justify-content-between">
+                                        <h6 class="card-title text-uppercase fw-bold text-dark mb-3" style="font-size: 1rem; min-height: 48px; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                            @item.TenSanPham
+                                        </h6>
+
+                                        <div class="mt-auto">
+                                            <button class="btn btn-orange w-100 rounded-pill fw-bold text-white py-2 btn-add-cart-float"
+                                                    style="font-size: 1.05rem;"
+                                                    data-id="@item.MaSanPham"
+                                                    data-title="@item.TenSanPham"
+                                                    data-image="@imgSrc"
+                                                    data-price="@item.GiaDaGiam">
+                                                @string.Format("{0:N0}", item.GiaDaGiam) VNĐ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted fs-4">Không tìm thấy sản phẩm phù hợp.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .sidebar-float-wrapper {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .sidebar-float-wrapper:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            }
+
+        .product-card {
+            border-radius: 12px;
+            background: #fff;
+            min-height: 410px;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+            .product-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+            }
+
+        .product-img-float {
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-img-float {
+            transform: scale(1.08);
+        }
+
+        .btn-orange {
+            background-color: #f36f21;
+            border: none;
+            transition: background-color 0.2s ease, transform 0.15s ease;
+        }
+
+            .btn-orange:hover {
+                background-color: #d85c13;
+                transform: scale(1.02);
+            }
+
+        .product-item, .sidebar-float-wrapper, .section {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .price-input::-webkit-outer-spin-button,
+        .price-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .price-input {
+            -moz-appearance: textfield;
+            font-size: 0.95rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+            .price-input:focus {
+                border-color: #f36f21;
+                box-shadow: 0 0 0 0.2rem rgba(243, 111, 33, 0.25);
+            }
+
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const priceForm = document.getElementById('priceFilterForm');
+            if (priceForm) {
+                priceForm.addEventListener('submit', function (e) {
+                    let minPriceVal = document.getElementById('minPrice').value;
+                    let maxPriceVal = document.getElementById('maxPrice').value;
+
+                    if (minPriceVal !== "" && maxPriceVal !== "") {
+                        let min = parseFloat(minPriceVal);
+                        let max = parseFloat(maxPriceVal);
+
+                        if (min > max) {
+                            e.preventDefault();
+                            alert('Vui lòng nhập "Giá từ" nhỏ hơn hoặc bằng "Giá đến"!');
+                            document.getElementById('minPrice').focus();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

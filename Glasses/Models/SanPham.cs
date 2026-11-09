@@ -52,5 +52,7 @@ namespace Glasses.Models
         // Khóa ngoại liên kết bảng ThuongHieu
         [ForeignKey("MaThuongHieu")]
         public virtual ThuongHieu? ThuongHieu { get; set; }
+
+        public virtual ICollection<BienThe> BienThes { get; set; } = new List<BienThe>();
     }
 }
