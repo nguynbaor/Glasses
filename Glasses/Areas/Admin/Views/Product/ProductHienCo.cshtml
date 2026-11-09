@@ -47,7 +47,6 @@
                 </form>
             </div>
 
-            <!-- Nút Thêm sản phẩm trỏ tới Action AddProduct -->
             <a class="tf-button style-1 w208" href="/Admin/Product/AddProduct">
                 <i class="icon-plus"></i>
                 Thêm sản phẩm
@@ -76,24 +75,34 @@
                         {
                             @foreach (var item in Model)
                             {
+                                string defaultImg = Url.Content("~/Admin/images/products/default.png");
+                                string imgSrc = defaultImg;
+
+                                if (!string.IsNullOrEmpty(item.HinhAnh))
+                                {
+                                    if (item.HinhAnh.StartsWith("http://") || item.HinhAnh.StartsWith("https://"))
+                                    {
+                                        imgSrc = item.HinhAnh;
+                                    }
+                                    else if (item.HinhAnh.StartsWith("~/") || item.HinhAnh.StartsWith("/"))
+                                    {
+                                        imgSrc = Url.Content(item.HinhAnh);
+                                    }
+                                    else
+                                    {
+                                        imgSrc = Url.Content("~/Admin/images/products/" + item.HinhAnh);
+                                    }
+                                }
+
                                 <tr>
                                     <td>@(stt++)</td>
                                     <td>
                                         <div class="flex items-center gap10">
-                                            <!-- Dynamic hiển thị ảnh từ CSDL -->
-                                            <div class="image">
-                                                @if (!string.IsNullOrEmpty(item.HinhAnh))
-                                                {
-                                                    <img src="~/Admin/images/products/@item.HinhAnh"
-                                                         alt="@item.TenSanPham"
-                                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/Admin/images/products/default.png"
-                                                         alt="No Image"
-                                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
-                                                }
+                                            <div class="image" style="width: 50px; height: 50px; min-width: 50px; flex-shrink: 0; overflow: hidden; border-radius: 6px; background-color: #f8f9fa;">
+                                                <img src="@imgSrc"
+                                                     alt="@item.TenSanPham"
+                                                     onerror="this.onerror=null; this.src='@defaultImg';"
+                                                     style="width: 100%; height: 100%; object-fit: contain; display: block;">
                                             </div>
                                             <div>
                                                 <a href="/Admin/Product/Details/@item.MaSanPham" class="body-title-2">
@@ -102,7 +111,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <!-- Định dạng tiền tệ VNĐ -->
+
                                     <td>@item.Gia.ToString("N0") ₫</td>
 
                                     <td>@item.MaSanPham</td>
@@ -137,7 +146,6 @@
                 </table>
             </div>
 
-            <!-- Phân trang -->
             <div class="divider"></div>
 
             <div class="flex items-center justify-between flex-wrap gap10">
