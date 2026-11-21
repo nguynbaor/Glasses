@@ -45,5 +45,28 @@ namespace Glasses.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpGet]
+        public IActionResult About()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Contact(string fullName, string email, string phone, string subject, string message)
+        {
+            if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(message))
+            {
+                ViewBag.ErrorMessage = "Vui lòng điền đầy đủ Họ tên, Email và Nội dung tin nhắn. ";
+                return View();
+            }
+            ViewBag.SuccessMessage = $"Cảm ơn {fullName}! Chúng tôi đã nhận được yêu cầu tư vấn của bạn và sẽ phản hồi sớm nhất.";
+            ModelState.Clear();
+            return View();
+        }
     }
 }

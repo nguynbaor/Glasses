@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "Giới thiệu - Cửa hàng Kính Mắt Thời Trang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Hero Banner Giới Thiệu -->
+<section class="py-5 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <span class="badge bg-dark text-uppercase px-3 py-2 mb-3">Về chúng tôi</span>
+                <h1 class="display-5 fw-bold mb-3">Nâng Tầm Tầm Nhìn & Phong Cách Của Bạn</h1>
+                <p class="lead text-muted mb-4">
+                    Chuyên cung cấp các dòng gọng kính, kính mát thời trang nam nữ, kính thể thao và tròng kính chính hãng với công nghệ đo khám khúc xạ chuẩn xác.
+                </p>
+                <div class="d-flex gap-3">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-dark btn-lg px-4">Khám phá sản phẩm</a>
+                    <a asp-controller="Home" asp-action="Contact" class="btn btn-outline-dark btn-lg px-4">Đặt lịch đo mắt</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="~/image/kinhthoitrang.png" alt="Bộ sưu tập kính thời trang" class="img-fluid rounded-4 shadow-sm" style="max-height: 400px; object-fit: cover;" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Giá trị cốt lõi / Cam kết dịch vụ (Tận dụng bộ icon service có sẵn) -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Tại Sao Chọn Cửa Hàng Kính Mắt Của Chúng Tôi?</h2>
+            <p class="text-muted">Cam kết chất lượng trên từng sản phẩm và trải nghiệm khách hàng</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+                    <div class="mb-3">
+                        <img src="~/image/icons/service-1.png" alt="Sản phẩm chính hãng" style="width: 60px; height: 60px; object-fit: contain;" />
+                    </div>
+                    <h5 class="fw-bold">100% Chính Hãng</h5>
+                    <p class="text-muted mb-0">
+                        Phân phối trực tiếp các thương hiệu kính mắt uy tín, đầy đủ tem chống hàng giả và thẻ bảo hành chính hãng.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+                    <div class="mb-3">
+                        <img src="~/image/icons/service-2.png" alt="Đo khám chuyên nghiệp" style="width: 60px; height: 60px; object-fit: contain;" />
+                    </div>
+                    <h5 class="fw-bold">Đo Khám Khúc Xạ Miễn Phí</h5>
+                    <p class="text-muted mb-0">
+                        Hệ thống máy đo thị lực hiện đại cùng đội ngũ kỹ thuật viên giàu kinh nghiệm tư vấn tròng kính phù hợp nhất.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+                    <div class="mb-3">
+                        <img src="~/image/icons/service-3.png" alt="Bảo hành trọn đời" style="width: 60px; height: 60px; object-fit: contain;" />
+                    </div>
+                    <h5 class="fw-bold">Bảo Hành & Vệ Sinh Trọn Đời</h5>
+                    <p class="text-muted mb-0">
+                        Hỗ trợ đổi trả trong 7 ngày, miễn phí thay đệm mũi, nắn chỉnh gọng và vệ sinh kính bằng sóng siêu âm trọn đời.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Danh mục nổi bật -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5">
+                <img src="~/image/poster.jpg" alt="Không gian cửa hàng" class="img-fluid rounded-4 shadow" />
+            </div>
+            <div class="col-lg-7">
+                <h3 class="fw-bold mb-3">Đa Dạng Dòng Sản Phẩm Cho Mọi Nhu Cầu</h3>
+                <p class="text-muted mb-4">
+                    Từ phong cách công sở thanh lịch đến thể thao năng động, chúng tôi luôn cập nhật những mẫu thiết kế mới nhất theo xu hướng toàn cầu.
+                </p>
+                <div class="row g-3">
+                    <div class="col-sm-6 d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm">
+                        <img src="~/image/icons/gongkinh.png" alt="Gọng kính" style="width: 45px; height: 45px; object-fit: contain;" />
+                        <div>
+                            <h6 class="fw-bold mb-0">Gọng Kính Cận / Viễn</h6>
+                            <small class="text-muted">Titan, Nhựa dẻo TR90, Kim loại</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm">
+                        <img src="~/image/icons/trongkinh.png" alt="Tròng kính" style="width: 45px; height: 45px; object-fit: contain;" />
+                        <div>
+                            <h6 class="fw-bold mb-0">Tròng Kính Chức Năng</h6>
+                            <small class="text-muted">Chống ánh sáng xanh, Đổi màu</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm">
+                        <img src="~/image/icons/kinhmatnam.png" alt="Kính mát" style="width: 45px; height: 45px; object-fit: contain;" />
+                        <div>
+                            <h6 class="fw-bold mb-0">Kính Mát Thời Trang</h6>
+                            <small class="text-muted">Chống tia UV400, Phân cực Polarized</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 d-flex align-items-center gap-3 bg-white p-3 rounded-3 shadow-sm">
+                        <img src="~/image/icons/kinhthethao.png" alt="Kính thể thao" style="width: 45px; height: 45px; object-fit: contain;" />
+                        <div>
+                            <h6 class="fw-bold mb-0">Kính Thể Thao</h6>
+                            <small class="text-muted">Bền bỉ, ôm sát, chống va đập</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
