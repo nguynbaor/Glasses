@@ -3,7 +3,7 @@ name: Deploy ASP.NET Core to Somee
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-deploy:
@@ -29,6 +29,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
+          protocol: ftps
+          security: loose
           local-dir: ./publish/
           server-dir: ./www.Nhom6LTW.somee.com/
