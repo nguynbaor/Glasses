@@ -16,12 +16,12 @@ jobs:
       - name: 2. Cài đặt .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x' # Đổi thành '6.0.x' hoặc '7.0.x' nếu dự án dùng bản cũ hơn
+          dotnet-version: '8.0.x'
 
       - name: 3. Restore & Publish ứng dụng
         run: |
-          dotnet restore
-          dotnet publish -c Release -o ./publish
+          dotnet restore ./Glasses/Glasses.csproj
+          dotnet publish ./Glasses/Glasses.csproj -c Release -o ./publish
 
       - name: 4. Upload lên Somee qua FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
