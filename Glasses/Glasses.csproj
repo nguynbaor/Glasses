@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,7 +28,7 @@
     <Folder Include="wwwroot\image\items\" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
     <Exec Command="powershell -Command &quot;if (Test-Path '$(TargetDir)') { Get-ChildItem -Path '$(TargetDir)*' | Unblock-File }&quot;" />
   </Target>
 
