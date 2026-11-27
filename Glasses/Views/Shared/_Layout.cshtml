@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
@@ -12,6 +12,20 @@
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
 
     @await RenderSectionAsync("Styles", required: false)
+    <style>
+        .smart-search-form { position: relative; }
+        .smart-search-button { border: 0; padding: 0; background: transparent; cursor: pointer; }
+        .search-suggestions { display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 2000;
+            background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            overflow: hidden; max-height: 320px; overflow-y: auto; }
+        .search-suggestions.is-open { display: block; }
+        .search-suggestion-item { display: block; width: 100%; border: 0; background: #fff; color: #222; text-align: left;
+            padding: 10px 14px; cursor: pointer; font-size: 14px; }
+        .search-suggestion-item:hover, .search-suggestion-item:focus { background: #fff3e9; outline: none; }
+        .search-suggestion-brand { display: block; color: #888; font-size: 12px; margin-top: 2px; }
+        .search-suggestion-empty { padding: 12px 14px; color: #777; font-size: 13px; }
+        @@media (max-width: 768px) { .search-suggestions { min-width: 230px; } }
+    </style>
 </head>
 <body>
 
@@ -58,9 +72,14 @@
             </ul>
 
             <div class="nav_items">
-                <form action="#" class="nav_form">
-                    <input type="text" class="nav_input" placeholder="search here...." />
-                    <img src="~/image/search.png" alt="" class="nav_search" />
+                <form asp-controller="Product" asp-action="Index" method="get" class="nav_form smart-search-form" autocomplete="off">
+                    <input type="search" name="q" id="globalProductSearch" class="nav_input"
+                           placeholder="Tìm tên kính hoặc thương hiệu..." aria-label="Tìm kiếm sản phẩm"
+                           aria-autocomplete="list" aria-controls="globalSearchSuggestions" />
+                    <button type="submit" class="smart-search-button" aria-label="Tìm kiếm">
+                        <img src="~/image/search.png" alt="" class="nav_search" />
+                    </button>
+                    <div id="globalSearchSuggestions" class="search-suggestions" role="listbox"></div>
                 </form>
                 <img src="~/image/heart.png" alt="" class="nav_heart" />
 
@@ -226,6 +245,80 @@
             updateGlobalCartBadge();
 
             window.updateCartBadge = updateGlobalCartBadge;
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('globalProductSearch');
+            const list = document.getElementById('globalSearchSuggestions');
+            if (!input || !list) return;
+
+            let debounceTimer;
+            let activeRequest;
+            const suggestionsUrl = '@Url.Action("Suggestions", "Product")';
+
+            function closeSuggestions() {
+                list.classList.remove('is-open');
+                list.innerHTML = '';
+            }
+
+            function showMessage(message) {
+                list.innerHTML = '';
+                const item = document.createElement('div');
+                item.className = 'search-suggestion-empty';
+                item.textContent = message;
+                list.appendChild(item);
+                list.classList.add('is-open');
+            }
+
+            input.addEventListener('input', function () {
+                const term = input.value.trim();
+                clearTimeout(debounceTimer);
+                if (activeRequest) activeRequest.abort();
+                if (term.length < 2) { closeSuggestions(); return; }
+
+                debounceTimer = setTimeout(async function () {
+                    activeRequest = new AbortController();
+                    try {
+                        const response = await fetch(suggestionsUrl + '?term=' + encodeURIComponent(term),
+                            { signal: activeRequest.signal });
+                        if (!response.ok) throw new Error('Không thể tải gợi ý');
+                        const products = await response.json();
+                        list.innerHTML = '';
+                        if (!products.length) { showMessage('Không tìm thấy sản phẩm phù hợp'); return; }
+
+                        products.forEach(function (product) {
+                            const button = document.createElement('button');
+                            button.type = 'button';
+                            button.className = 'search-suggestion-item';
+                            button.setAttribute('role', 'option');
+                            button.textContent = product.name;
+                            if (product.brand) {
+                                const brand = document.createElement('span');
+                                brand.className = 'search-suggestion-brand';
+                                brand.textContent = 'Thương hiệu: ' + product.brand;
+                                button.appendChild(brand);
+                            }
+                            button.addEventListener('click', function () {
+                                input.value = product.name;
+                                input.form.submit();
+                            });
+                            list.appendChild(button);
+                        });
+                        list.classList.add('is-open');
+                    } catch (error) {
+                        if (error.name !== 'AbortError') closeSuggestions();
+                    }
+                }, 250);
+            });
+
+            input.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') closeSuggestions();
+            });
+            document.addEventListener('click', function (event) {
+                if (!event.target.closest('.smart-search-form')) closeSuggestions();
+            });
         });
     </script>
 
