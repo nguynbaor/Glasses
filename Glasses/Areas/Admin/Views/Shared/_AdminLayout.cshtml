@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/animation.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/icon/style.css">
+</head>
+
+<body class="body">
+    <div id="wrapper">
+        <div id="page">
+            <div class="layout-wrap">
+                <!-- KHU VỰC SIDEBAR (Menu trái) -->
+                <div class="section-menu-left">
+                    <div class="box-logo">
+                        <a href="/Admin/Home/Index" id="site-logo-inner">
+                            <img id="logo_header"
+                                 alt="Glasses Logo"
+                                 src="/Admin/images/logo/glasses.png"
+                                 style="max-height: 45px; width: auto; object-fit: contain; display: block !important;" />
+                        </a>
+                        <div class="button-show-hide">
+                            <i class="icon-menu-left"></i>
+                        </div>
+                    </div>
+                    <div class="center">
+                        <div class="center-item">
+                            <div class="center-heading">Trang Chủ</div>
+                            <ul class="menu-list">
+                                <li class="menu-item">
+                                    <a href="/Admin/Home/Index" class="">
+                                        <div class="icon"><i class="icon-grid"></i></div>
+                                        <div class="text">Thống kê</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="center-item">
+                            <ul class="menu-list">
+                                <li class="menu-item">
+                                    <a href="/Home/Index">
+                                        <div class="icon"><i class="icon-grid"></i></div>
+                                        <div class="text">Tổng quan</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-shopping-cart"></i></div>
+                                        <div class="text">Sản Phẩm</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/AddProduct">
+                                                <div class="text">Thêm Sản Phẩm</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/ProductHienCo">
+                                                <div class="text">Sản Phẩm Hiện Có</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-layers"></i></div>
+                                        <div class="text">Thương Hiệu</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/AddBrand">
+                                                <div class="text">Thêm Thương Hiệu</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/BrandHienCo">
+                                                <div class="text">Thương Hiệu Hiện Có</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-layers"></i></div>
+                                        <div class="text">Danh Mục</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/AddCategory">
+                                                <div class="text">Thêm Danh Mục</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/CategoryHienCo">
+                                                <div class="text">Danh Mục Hiện Có</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-file-plus"></i></div>
+                                        <div class="text">Đơn Hàng</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/OrderHienCo">
+                                                <div class="text">Đơn Hàng Hiện Có</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="/Admin/Product/OrderTracking">
+                                                <div class="text">Đơn Hàng Đã Xác Nhận</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="/Admin/User/UserIndex">
+                                        <div class="icon"><i class="icon-user"></i></div>
+                                        <div class="text">Tài Khoản</div>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="/Admin/Setting/CaiDat">
+                                        <div class="icon"><i class="icon-settings"></i></div>
+                                        <div class="text">Cài Đặt</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- KHU VỰC BÊN PHẢI -->
+                <div class="section-content-right">
+                    <!-- KHU VỰC HEADER (Thanh tìm kiếm, Thông báo, Avatar) -->
+                    <div class="header-dashboard">
+                        <div class="wrap">
+                            <div class="header-left">
+                                <a href="/Admin/Home/Index">
+                                    <img id="logo_header_mobile"
+                                         alt="Glasses Logo"
+                                         src="/Admin/images/logo/glasses.png"
+                                         style="max-height: 40px; width: auto; object-fit: contain; display: block !important;" />
+                                </a>
+                                <div class="button-show-hide">
+                                    <i class="icon-menu-left"></i>
+                                </div>
+
+                                <form class="form-search flex-grow">
+                                    <fieldset class="name">
+                                        <input type="text" placeholder="Tìm kiếm" class="show-search" name="name"
+                                               tabindex="2" value="" aria-required="true" required="">
+                                    </fieldset>
+                                    <div class="button-submit">
+                                        <button class="" type="submit"><i class="icon-search"></i></button>
+                                    </div>
+                                    <div class="box-content-search" id="box-content-search">
+                                        <ul class="mb-24">
+                                            <li class="mb-14">
+                                                <div class="body-title">Sản phẩm bán chạy</div>
+                                            </li>
+                                            <li class="mb-14">
+                                                <div class="divider"></div>
+                                            </li>
+                                            <li>
+                                                <ul>
+                                                    <li class="product-item gap14 mb-10">
+                                                        <div class="image no-bg">
+                                                            <img src="~/Admin/images/products/17.png" alt="">
+                                                        </div>
+                                                        <div class="flex items-center justify-between gap20 flex-grow">
+                                                            <div class="name">
+                                                                <a href="#" class="body-text">Kính mát dáng chữ nhật Freya</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="header-grid">
+
+                                <div class="popup-wrap message type-header">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="header-item">
+                                                <span class="text-tiny">1</span>
+                                                <i class="icon-bell"></i>
+                                            </span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end has-content"
+                                            aria-labelledby="dropdownMenuButton2">
+                                            <li>
+                                                <h6>Thông báo</h6>
+                                            </li>
+                                            <li>
+                                                <div class="message-item item-1">
+                                                    <div class="image">
+                                                        <i class="icon-noti-1"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="body-title-2">Có ưu đãi giảm giá</div>
+                                                        <div class="text-tiny">Khám phá các chương trình ưu đãi dành cho bạn.</div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li><a href="#" class="tf-button w-full">Xem tất cả</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="popup-wrap user type-header">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="header-user wg-user">
+                                                <span class="image">
+                                                    <img src="~/Admin/images/avatar/user-1.png" alt="">
+                                                </span>
+                                                <span class="flex flex-column">
+                                                    <span class="body-title mb-2">Gia Bảo</span>
+                                                    <span class="text-tiny">Admin</span>
+                                                </span>
+                                            </span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end has-content"
+                                            aria-labelledby="dropdownMenuButton3">
+                                            <li>
+                                                <a href="#" class="user-item">
+                                                    <div class="icon">
+                                                        <i class="icon-user"></i>
+                                                    </div>
+                                                    <div class="body-title-2">Tài khoản</div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/Admin/Home/Index" class="user-item">
+                                                    <div class="icon">
+                                                        <i class="icon-log-out"></i>
+                                                    </div>
+                                                    <div class="body-title-2">Đăng xuất</div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KHU VỰC NỘI DUNG ĐỘNG -->
+                    <div class="main-content">
+                        <div class="main-content-inner">
+                            @RenderBody()
+                        </div>
+
+                        <!-- KHU VỰC FOOTER -->
+                        <div class="bottom-page">
+                            <div class="body-text">Copyright © 2026 Cửa Hàng Kính Mắt</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT CHUNG CHO TOÀN BỘ ADMIN -->
+    <script src="~/Admin/js/jquery.min.js"></script>
+    <script src="~/Admin/js/bootstrap.min.js"></script>
+    <script src="~/Admin/js/apexcharts/apexcharts.js"></script>
+    <script src="~/Admin/js/main.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

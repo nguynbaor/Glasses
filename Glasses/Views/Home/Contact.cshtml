@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Liên hệ - Cửa hàng Kính Mắt Thời Trang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Header Trang Liên Hệ -->
+<section class="py-5 bg-light border-bottom">
+    <div class="container text-center">
+        <span class="badge bg-dark text-uppercase px-3 py-2 mb-2">Hỗ trợ khách hàng</span>
+        <h1 class="display-6 fw-bold">Liên Hệ Với Chúng Tôi</h1>
+        <p class="text-muted mx-auto" style="max-width: 600px;">
+            Bạn cần tư vấn chọn gọng kính phù hợp khuôn mặt, đặt lịch đo khám mắt hoặc kiểm tra tình trạng đơn hàng? Hãy để lại lời nhắn cho chúng tôi.
+        </p>
+    </div>
+</section>
+
+<!-- Nội dung chính: Thông tin showroom + Form liên hệ -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Cột trái: Thông tin cửa hàng -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-dark text-white">
+                    <h4 class="fw-bold mb-4">Thông Tin Showroom</h4>
+
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-secondary small fw-bold">Địa chỉ cửa hàng</h6>
+                        <p class="mb-0">140 Lê Trọng Tấn, Phường Tây Thạnh, Quận Tân Phú, TP. Hồ Chí Minh</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-secondary small fw-bold">Hotline tư vấn & Đặt lịch</h6>
+                        <p class="mb-1 fs-5 fw-semibold">0909 123 456</p>
+                        <small class="text-secondary">Hỗ trợ Zalo / Cuộc gọi từ 08:00 - 21:30</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-secondary small fw-bold">Email hỗ trợ</h6>
+                        <p class="mb-0">cskh@glassesstore.vn</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-secondary small fw-bold">Giờ mở cửa</h6>
+                        <p class="mb-1">Thứ 2 - Chủ Nhật: 08:30 – 21:30</p>
+                        <small class="text-secondary">(Làm việc xuyên suốt cả ngày lễ)</small>
+                    </div>
+
+                    <hr class="border-secondary my-4" />
+                    <p class="small text-secondary mb-0">
+                        * Miễn phí đo khám khúc xạ và vệ sinh kính bằng máy siêu âm cho tất cả khách hàng ghé thăm showroom.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cột phải: Form gửi yêu cầu -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+                    <h4 class="fw-bold mb-3">Gửi Tin Nhắn Cho Chúng Tôi</h4>
+                    <p class="text-muted mb-4">Điền thông tin bên dưới, đội ngũ tư vấn viên sẽ phản hồi qua điện thoại hoặc email trong vòng 30 phút.</p>
+
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @ViewBag.SuccessMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @ViewBag.ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form asp-controller="Home" asp-action="Contact" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Họ và tên <span class="text-danger">*</span></label>
+                                <input type="text" name="fullName" class="form-control form-control-lg" placeholder="Nguyễn Văn A" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Số điện thoại</label>
+                                <input type="tel" name="phone" class="form-control form-control-lg" placeholder="09xx xxx xxx" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                                <input type="email" name="email" class="form-control form-control-lg" placeholder="email@example.com" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Chủ đề cần hỗ trợ</label>
+                                <select name="subject" class="form-select form-select-lg">
+                                    <option value="Tư vấn chọn gọng kính">Tư vấn chọn gọng kính</option>
+                                    <option value="Đặt lịch đo khám mắt miễn phí">Đặt lịch đo khám mắt miễn phí</option>
+                                    <option value="Hỗ trợ bảo hành / Đổi trả">Hỗ trợ bảo hành / Đổi trả</option>
+                                    <option value="Khác">Vấn đề khác</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Nội dung chi tiết <span class="text-danger">*</span></label>
+                                <textarea name="message" rows="4" class="form-control" placeholder="Nhập câu hỏi hoặc khung giờ bạn muốn đặt lịch đo mắt..." required></textarea>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-dark btn-lg w-100 fw-semibold">Gửi Yêu Cầu Tư Vấn</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bản đồ Google Maps nhúng -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="rounded-4 overflow-hidden shadow-sm border">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.067295909249!2d106.6260906757362!3d10.806157858643193!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be27d8b4f4d%3A0x92dcba2950430867!2zMTQwIEzDqiBUcuG7jW5nIFThuqVuLCBUw6J5IFRo4bqhbmgsIFTDom4gUGjDuiwgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s"
+                            width="100%" height="380" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

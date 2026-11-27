@@ -1,0 +1,100 @@
+﻿@model Glasses.Models.SanPham
+@{
+    ViewData["Title"] = "Quản lý biến thể sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-1">Biến thể & Tồn kho: <span class="text-primary">@Model.TenSanPham</span></h4>
+            <small class="text-muted">Mã SP: @Model.MaSanPham | Tổng tồn kho: <strong>@Model.BienThes.Sum(b => b.SoLuongTon)</strong></small>
+        </div>
+        <a asp-action="ProductHienCo" class="btn btn-secondary">← Quay lại danh sách SP</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <!-- Form thêm biến thể mới -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light fw-bold">Thêm biến thể màu mới</div>
+        <div class="card-body">
+            <form asp-action="AddVariant" method="post" enctype="multipart/form-data" class="row g-3 align-items-end">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="MaSanPham" value="@Model.MaSanPham" />
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Màu sắc / Phân loại *</label>
+                    <input type="text" name="MauSac" class="form-control" placeholder="VD: Đen nhám, Đồi mồi, Vàng hồng..." required />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Số lượng tồn *</label>
+                    <input type="number" name="SoLuongTon" value="10" min="0" class="form-control" required />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Ảnh biến thể (Tùy chọn)</label>
+                    <input type="file" name="HinhAnhBienThe" accept="image/*" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success w-100">+ Thêm biến thể</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Danh sách biến thể hiện có -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light fw-bold">Danh sách biến thể hiện có (@Model.BienThes.Count)</div>
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã biến thể</th>
+                        <th>Hình ảnh</th>
+                        <th>Màu sắc</th>
+                        <th style="width: 260px;">Số lượng tồn kho</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.BienThes.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">Sản phẩm này chưa có biến thể nào. Hãy thêm ít nhất 1 biến thể để khách có thể đặt hàng.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var bt in Model.BienThes)
+                        {
+                            var imgPath = !string.IsNullOrEmpty(bt.HinhAnh) ? bt.HinhAnh : Model.HinhAnh;
+                            <tr>
+                                <td class="fw-bold">@bt.MaBienThe</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(imgPath))
+                                    {
+                                        <img src="~/Admin/images/products/@imgPath" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                                    }
+                                </td>
+                                <td><span class="badge bg-secondary fs-6">@bt.MauSac</span></td>
+                                <td>
+                                    <form asp-action="UpdateVariantStock" method="post" class="d-flex gap-2">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="maBienThe" value="@bt.MaBienThe" />
+                                        <input type="number" name="soLuongTon" value="@bt.SoLuongTon" min="0" class="form-control form-control-sm" />
+                                        <button type="submit" class="btn btn-sm btn-primary">Lưu</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

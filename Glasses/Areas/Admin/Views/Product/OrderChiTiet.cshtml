@@ -1,0 +1,121 @@
+﻿@model Glasses.Models.DonHang
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var khachHang = ViewBag.KhachHang as Glasses.Models.NguoiDung;
+    var chiTiets = ViewBag.ChiTiets as IEnumerable<dynamic>;
+    var trangThais = new[] { "Chờ xác nhận", "Đang giao", "Hoàn thành", "Đã hủy" };
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">Chi tiết đơn hàng: <span class="text-primary">#@Model.MaDonHang</span></h4>
+        <a asp-action="OrderHienCo" class="btn btn-secondary">← Quay lại DS đơn hàng</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="row g-4 mb-4">
+        <!-- Thông tin khách hàng -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-light fw-bold">Thông tin khách hàng</div>
+                <div class="card-body">
+                    @if (khachHang != null)
+                    {
+                        <p class="mb-2"><strong>Họ và tên:</strong> @khachHang.HoVaTen</p>
+                        <p class="mb-2"><strong>Số điện thoại:</strong> @khachHang.SoDienThoai</p>
+                        <p class="mb-2"><strong>Email:</strong> @khachHang.Email</p>
+                        <p class="mb-0"><strong>Địa chỉ giao:</strong> @(khachHang.DiaChi ?? "Chưa cập nhật")</p>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">Mã khách hàng: @Model.MaKhachHang (Không tìm thấy thông tin chi tiết)</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Trạng thái & Xử lý đơn -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-light fw-bold">Xử lý trạng thái đơn hàng</div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Ngày đặt:</strong> @(Model.NgayDat?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</p>
+                    <p class="mb-3">
+                        <strong>Trạng thái hiện tại:</strong>
+                        <span class="badge @(Model.TrangThai == "Đã hủy" ? "bg-danger" : Model.TrangThai == "Hoàn thành" ? "bg-success" : "bg-warning text-dark")">
+                            @(Model.TrangThai ?? "Chờ xác nhận")
+                        </span>
+                    </p>
+
+                    <form asp-action="UpdateOrderStatus" method="post" class="d-flex gap-2">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="maDonHang" value="@Model.MaDonHang" />
+                        <select name="trangThaiMoi" class="form-select">
+                            @foreach (var tt in trangThais)
+                            {
+                                <option value="@tt" selected="@(Model.TrangThai == tt)">@tt</option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-primary px-4">Cập nhật</button>
+                    </form>
+                    <small class="text-muted d-block mt-2">* Lưu ý: Chọn "Đã hủy" sẽ tự động hoàn lại số lượng tồn kho cho từng biến thể.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bảng sản phẩm trong đơn -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light fw-bold">Danh sách sản phẩm đặt mua</div>
+        <div class="card-body p-0">
+            <table class="table table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Màu sắc</th>
+                        <th class="text-end">Đơn giá</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-end">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (chiTiets != null)
+                    {
+                        foreach (var item in chiTiets)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (!string.IsNullOrEmpty((string)item.HinhAnh))
+                                        {
+                                            <img src="~/Admin/images/products/@item.HinhAnh" style="width: 45px; height: 45px; object-fit: cover; border-radius: 4px;" />
+                                        }
+                                        <div>
+                                            <div class="fw-bold">@item.TenSanPham</div>
+                                            <small class="text-muted">Mã BT: @item.MaBienThe</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@item.MauSac</td>
+                                <td class="text-end">@(((decimal)item.DonGia).ToString("N0")) đ</td>
+                                <td class="text-center">@item.SoLuong</td>
+                                <td class="text-end fw-bold">@(((decimal)item.TongTien).ToString("N0")) đ</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="table-light">
+                        <td colspan="4" class="text-end fw-bold fs-5">Tổng cộng thanh toán:</td>
+                        <td class="text-end fw-bold fs-5 text-danger">@Model.TongTien.ToString("N0") đ</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

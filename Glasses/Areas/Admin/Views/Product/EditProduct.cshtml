@@ -1,0 +1,112 @@
+﻿@model Glasses.Models.SanPham
+@{
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">Chỉnh sửa sản phẩm: <span class="text-primary">@Model.TenSanPham</span></h4>
+        <a asp-action="ProductHienCo" class="btn btn-secondary">← Quay lại danh sách</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="EditProduct" asp-route-id="@Model.MaSanPham" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="MaSanPham" />
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Mã sản phẩm</label>
+                        <input type="text" class="form-control" value="@Model.MaSanPham" disabled />
+                    </div>
+
+                    <div class="col-md-8">
+                        <label asp-for="TenSanPham" class="form-label fw-bold">Tên sản phẩm *</label>
+                        <input asp-for="TenSanPham" class="form-control" required />
+                        <span asp-validation-for="TenSanPham" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="MaDanhMuc" class="form-label fw-bold">Danh mục</label>
+                        <select asp-for="MaDanhMuc" asp-items="ViewBag.DanhMucs" class="form-select">
+                            <option value="">-- Chọn danh mục --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="MaThuongHieu" class="form-label fw-bold">Thương hiệu</label>
+                        <select asp-for="MaThuongHieu" asp-items="ViewBag.ThuongHieus" class="form-select">
+                            <option value="">-- Chọn thương hiệu --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="ChatLieu" class="form-label fw-bold">Chất liệu gọng</label>
+                        <input asp-for="ChatLieu" class="form-control" placeholder="VD: Titan, Nhựa Acetate..." />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Gia" class="form-label fw-bold">Giá gốc (VNĐ) *</label>
+                        <input asp-for="Gia" id="inputGia" type="number" step="1000" min="0" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="PhanTramGiam" class="form-label fw-bold">Phần trăm giảm (%)</label>
+                        <input asp-for="PhanTramGiam" id="inputGiam" type="number" min="0" max="100" class="form-control" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Giá sau giảm (Tự tính)</label>
+                        <input id="previewGiaDaGiam" type="text" class="form-control bg-light fw-bold text-danger"
+                               value="@Model.GiaDaGiam.ToString("N0") đ" readonly />
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="ThongTin" class="form-label fw-bold">Thông tin mô tả</label>
+                        <textarea asp-for="ThongTin" rows="4" class="form-control"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Hình ảnh đại diện mới (Bỏ trống nếu giữ ảnh cũ)</label>
+                        <input type="file" name="HinhAnhFile" accept="image/*" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold d-block">Ảnh hiện tại</label>
+                        @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                        {
+                            <img src="~/Admin/images/products/@Model.HinhAnh" alt="@Model.TenSanPham"
+                                 style="max-height: 120px; border-radius: 8px; border: 1px solid #ddd;" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">Chưa có ảnh</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4">Lưu thay đổi</button>
+                    <a asp-action="Variants" asp-route-maSanPham="@Model.MaSanPham" class="btn btn-info text-white">Quản lý biến thể màu</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const inputGia = document.getElementById('inputGia');
+    const inputGiam = document.getElementById('inputGiam');
+    const preview = document.getElementById('previewGiaDaGiam');
+
+    function tinhGia() {
+        const gia = parseFloat(inputGia.value) || 0;
+        const giam = Math.min(100, Math.max(0, parseFloat(inputGiam.value) || 0));
+        const ketQua = gia * (100 - giam) / 100;
+        preview.value = ketQua.toLocaleString('vi-VN') + ' đ';
+    }
+    inputGia.addEventListener('input', tinhGia);
+    inputGiam.addEventListener('input', tinhGia);
+</script>

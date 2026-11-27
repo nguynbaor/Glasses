@@ -1,0 +1,33 @@
+﻿@model Glasses.Models.ThuongHieu
+@{
+    ViewData["Title"] = "Sửa thương hiệu";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">Chỉnh sửa thương hiệu</h4>
+        <a asp-action="BrandHienCo" class="btn btn-secondary">← Quay lại</a>
+    </div>
+
+    <div class="card shadow-sm" style="max-width: 600px;">
+        <div class="card-body">
+            <form asp-action="EditBrand" asp-route-id="@Model.MaThuongHieu" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="MaThuongHieu" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Mã thương hiệu</label>
+                    <input type="text" class="form-control" value="@Model.MaThuongHieu" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TenThuongHieu" class="form-label fw-bold">Tên thương hiệu *</label>
+                    <input asp-for="TenThuongHieu" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            </form>
+        </div>
+    </div>
+</div>

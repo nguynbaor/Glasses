@@ -1,0 +1,87 @@
+﻿@model Glasses.Models.ViewModels.CategorySidebarViewModel
+
+<div class="sidebar-filter">
+    <div class="filter-price mt-4">
+        <h6 class="fw-bold mb-3 text-uppercase" style="font-size: 1.1rem;">Khoảng Giá</h6>
+
+        <form asp-controller="Product" asp-action="Index" method="get" id="priceFilterForm">
+            <input type="hidden" name="categoryId" value="@Model.ActiveCategoryId" />
+            <input type="hidden" name="sortBy" value="@Context.Request.Query["sortBy"]" />
+
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <input type="number"
+                       name="minPrice"
+                       id="minPrice"
+                       class="form-control price-input"
+                       placeholder="₫ TỪ"
+                       value="@(Model.MinPrice > 0 ? Model.MinPrice : "")"
+                       min="0" />
+                <span class="text-secondary fw-bold">-</span>
+                <input type="number"
+                       name="maxPrice"
+                       id="maxPrice"
+                       class="form-control price-input"
+                       placeholder="₫ ĐẾN"
+                       value="@(Model.MaxPrice > 0 ? Model.MaxPrice : "")"
+                       min="0" />
+            </div>
+
+            <button type="submit" class="btn btn-orange w-100 fw-bold text-white text-uppercase py-2">
+                Áp dụng
+            </button>
+        </form>
+    </div>
+
+    <div>
+        <h4 class="filter-title fw-bold mb-3">Danh Mục Sản Phẩm</h4>
+        <ul class="list-unstyled category-list">
+            @foreach (var cat in Model.Categories)
+            {
+                bool isActive = cat.MaDanhMuc == Model.ActiveCategoryId;
+                <li class="category-item py-2 border-bottom">
+                    <a asp-controller="Product"
+                       asp-action="Index"
+                       asp-route-categoryId="@cat.MaDanhMuc"
+                       asp-route-mainCategory="@cat.TenDanhMuc"
+                       class="text-decoration-none @(isActive ? "active-category" : "text-secondary")">
+                        @cat.TenDanhMuc
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    .filter-title {
+        font-size: 1.1rem;
+        color: #222;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+        background: #f36f21;
+    }
+
+    .custom-range::-moz-range-thumb {
+        background: #f36f21;
+    }
+
+    .category-list .category-item a {
+        transition: color 0.2s ease;
+        font-size: 0.95rem;
+    }
+
+        .category-list .category-item a:hover {
+            color: #f36f21 !important;
+        }
+    .active-category {
+        color: #f36f21 !important;
+        font-weight: 700 !important;
+    }
+</style>
+
+<script>
+    function updatePriceLabel(val) {
+        document.getElementById('maxPriceLabel').innerText = parseInt(val).toLocaleString('vi-VN') + ' VNĐ';
+    }
+</script>
