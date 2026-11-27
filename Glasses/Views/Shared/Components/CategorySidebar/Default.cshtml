@@ -1,4 +1,4 @@
-﻿@model Glasses.Models.ViewModels.CategorySidebarViewModel
+@model Glasses.Models.ViewModels.CategorySidebarViewModel
 
 <div class="sidebar-filter">
     <div class="filter-price mt-4">
@@ -7,6 +7,7 @@
         <form asp-controller="Product" asp-action="Index" method="get" id="priceFilterForm">
             <input type="hidden" name="categoryId" value="@Model.ActiveCategoryId" />
             <input type="hidden" name="sortBy" value="@Context.Request.Query["sortBy"]" />
+            <input type="hidden" name="q" value="@Context.Request.Query["q"]" />
 
             <div class="d-flex align-items-center gap-2 mb-3">
                 <input type="number"
@@ -43,6 +44,10 @@
                        asp-action="Index"
                        asp-route-categoryId="@cat.MaDanhMuc"
                        asp-route-mainCategory="@cat.TenDanhMuc"
+                       asp-route-q="@Context.Request.Query["q"]"
+                       asp-route-minPrice="@Context.Request.Query["minPrice"]"
+                       asp-route-maxPrice="@Context.Request.Query["maxPrice"]"
+                       asp-route-sortBy="@Context.Request.Query["sortBy"]"
                        class="text-decoration-none @(isActive ? "active-category" : "text-secondary")">
                         @cat.TenDanhMuc
                     </a>
