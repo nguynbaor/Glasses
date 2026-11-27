@@ -1,4 +1,4 @@
-﻿namespace Glasses.Models.ViewModels
+namespace Glasses.Models.ViewModels
 {
     public class CategorySidebarViewModel
     {
@@ -20,5 +20,6 @@
         public string SelectedSort { get; set; } = "default";
         public decimal MinPrice { get; set; }
         public decimal MaxPrice { get; set; }
+        public string SearchTerm { get; set; } = string.Empty;
     }
 }
