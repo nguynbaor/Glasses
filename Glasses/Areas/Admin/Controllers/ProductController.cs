@@ -37,6 +37,45 @@ public async Task<IActionResult> Inventory(string id)
 }
 [HttpPost]
 [ValidateAntiForgeryToken]
+public async Task<IActionResult> AddVariant(
+    string productId,
+    string variantId,
+    string? color,
+    int quantity)
+{
+    if (string.IsNullOrWhiteSpace(variantId) ||
+        quantity < 0 ||
+        await _context.BienThes.AnyAsync(
+            x => x.MaBienThe == variantId))
+    {
+        TempData["Error"] =
+            "Mã biến thể không hợp lệ hoặc đã tồn tại.";
+
+        return RedirectToAction(
+            nameof(Inventory),
+            new { id = productId });
+    }
+
+    if (!await _context.SanPhams.AnyAsync(
+        x => x.MaSanPham == productId))
+        return NotFound();
+
+    _context.BienThes.Add(new BienThe
+    {
+        MaBienThe = variantId.Trim(),
+        MaSanPham = productId,
+        MauSac = color,
+        SoLuongTon = quantity
+    });
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction(
+        nameof(Inventory),
+        new { id = productId });
+}
+[HttpPost]
+[ValidateAntiForgeryToken]
 public async Task<IActionResult> UpdateInventory(
     string productId,
     string variantId,
