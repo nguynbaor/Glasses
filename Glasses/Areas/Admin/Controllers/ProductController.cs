@@ -27,6 +27,49 @@ namespace Glasses.Areas.Admin.Controllers
             return item == null ? NotFound() : View("Details", item);
         }
         [HttpGet]
+public async Task<IActionResult> Inventory(string id)
+{
+    var item = await _context.SanPhams
+        .Include(x => x.BienThes)
+        .FirstOrDefaultAsync(x => x.MaSanPham == id);
+
+    return item == null ? NotFound() : View(item);
+}
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> UpdateInventory(
+    string productId,
+    string variantId,
+    int quantity,
+    string? color)
+{
+    if (quantity < 0)
+    {
+        TempData["Error"] = "Tồn kho không được âm.";
+
+        return RedirectToAction(
+            nameof(Inventory),
+            new { id = productId });
+    }
+
+    var variant = await _context.BienThes
+        .FirstOrDefaultAsync(x =>
+            x.MaBienThe == variantId &&
+            x.MaSanPham == productId);
+
+    if (variant == null)
+        return NotFound();
+
+    variant.SoLuongTon = quantity;
+    variant.MauSac = color;
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction(
+        nameof(Inventory),
+        new { id = productId });
+}
+        [HttpGet]
         public async Task<IActionResult> AddProduct()
         {
             // Load danh sách Danh mục và Thương hiệu cho dropdown list
