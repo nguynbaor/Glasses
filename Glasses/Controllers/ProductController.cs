@@ -57,5 +57,22 @@ namespace Glasses.Controllers
 
             return View(viewModel);
         }
+        [HttpGet]
+public async Task<IActionResult> Details(string id)
+{
+    if (string.IsNullOrWhiteSpace(id))
+        return NotFound();
+
+    var product = await _context.SanPhams
+        .Include(p => p.DanhMuc)
+        .Include(p => p.ThuongHieu)
+        .Include(p => p.BienThes)
+        .FirstOrDefaultAsync(p => p.MaSanPham == id);
+
+    if (product == null)
+        return NotFound();
+
+    return View(product);
+}
     }
 }
