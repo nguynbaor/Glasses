@@ -1,0 +1,96 @@
+@model Glasses.Models.SanPham
+
+@{
+    ViewData["Title"] = "Quản lý tồn kho";
+}
+
+<div class="container-fluid">
+    <h3>Quản lý tồn kho</h3>
+
+    <h5>@Model.TenSanPham</h5>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Mã biến thể</th>
+                <th>Màu sắc</th>
+                <th>Số lượng tồn</th>
+                <th>Cập nhật</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var item in Model.BienThes ?? new())
+        {
+            <tr>
+                <form asp-action="UpdateInventory"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="productId"
+                           value="@Model.MaSanPham" />
+
+                    <input type="hidden"
+                           name="variantId"
+                           value="@item.MaBienThe" />
+
+                    <td>@item.MaBienThe</td>
+
+                    <td>
+                        <input name="color"
+                               value="@item.MauSac"
+                               class="form-control" />
+                    </td>
+
+                    <td>
+                        <input name="quantity"
+                               type="number"
+                               min="0"
+                               value="@item.SoLuongTon"
+                               class="form-control" />
+                    </td>
+
+                    <td>
+                        <button class="btn btn-primary">
+                            Cập nhật
+                        </button>
+                    </td>
+                </form>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <hr />
+
+    <h5>Thêm biến thể mới</h5>
+
+    <form asp-action="AddVariant" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden"
+               name="productId"
+               value="@Model.MaSanPham" />
+
+        <input name="variantId"
+               class="form-control mb-2"
+               placeholder="Mã biến thể"
+               required />
+
+        <input name="color"
+               class="form-control mb-2"
+               placeholder="Màu kính" />
+
+        <input name="quantity"
+               type="number"
+               min="0"
+               value="0"
+               class="form-control mb-2" />
+
+        <button class="btn btn-success">
+            Thêm biến thể
+        </button>
+    </form>
+</div>
