@@ -15,7 +15,17 @@ namespace Glasses.Areas.Admin.Controllers
         {
             _context = context;
         }
-
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var item = await _context.SanPhams
+                .Include(x => x.DanhMuc)
+                .Include(x => x.ThuongHieu)
+                .Include(x => x.BienThes)
+                .FirstOrDefaultAsync(x => x.MaSanPham == id);
+        
+            return item == null ? NotFound() : View("Details", item);
+        }
         [HttpGet]
         public async Task<IActionResult> AddProduct()
         {
@@ -25,7 +35,103 @@ namespace Glasses.Areas.Admin.Controllers
 
             return View();
         }
+        [HttpGet]
+public async Task<IActionResult> Edit(string id)
+{
+    var item = await _context.SanPhams
+        .FirstOrDefaultAsync(x => x.MaSanPham == id);
 
+    if (item == null)
+        return NotFound();
+
+    await LoadProductLists();
+
+    return View(item);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Edit(
+    string id,
+    SanPham model,
+    IFormFile? HinhAnhFile)
+{
+    if (id != model.MaSanPham)
+        return BadRequest();
+
+    ModelState.Remove("DanhMuc");
+    ModelState.Remove("ThuongHieu");
+    ModelState.Remove("HinhAnh");
+    ModelState.Remove("BienThes");
+
+    if (model.Gia < 0 ||
+        model.PhanTramGiam < 0 ||
+        model.PhanTramGiam > 100)
+    {
+        ModelState.AddModelError(
+            "Gia",
+            "Giá hoặc phần trăm giảm không hợp lệ.");
+    }
+
+    if (!ModelState.IsValid)
+    {
+        await LoadProductLists();
+        return View(model);
+    }
+
+    var item = await _context.SanPhams
+        .FirstOrDefaultAsync(x => x.MaSanPham == id);
+
+    if (item == null)
+        return NotFound();
+
+    item.TenSanPham = model.TenSanPham;
+    item.MaDanhMuc = model.MaDanhMuc;
+    item.MaThuongHieu = model.MaThuongHieu;
+    item.ThongTin = model.ThongTin;
+    item.Gia = model.Gia;
+    item.PhanTramGiam = model.PhanTramGiam;
+
+    item.GiaDaGiam =
+        model.Gia * (100 - model.PhanTramGiam) / 100m;
+
+    item.ChatLieu = model.ChatLieu;
+
+    if (HinhAnhFile?.Length > 0)
+        item.HinhAnh = await SaveProductImage(HinhAnhFile);
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction(nameof(ProductHienCo));
+}
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Delete(string id)
+{
+    var item = await _context.SanPhams
+        .Include(x => x.BienThes)
+        .FirstOrDefaultAsync(x => x.MaSanPham == id);
+
+    if (item == null)
+        return NotFound();
+
+    if (item.BienThes.Any(v =>
+        _context.ChiTietDonHangs.Any(
+            c => c.MaBienThe == v.MaBienThe)))
+    {
+        TempData["Error"] =
+            "Không thể xóa sản phẩm đã phát sinh đơn hàng.";
+
+        return RedirectToAction(nameof(ProductHienCo));
+    }
+
+    _context.BienThes.RemoveRange(item.BienThes);
+    _context.SanPhams.Remove(item);
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction(nameof(ProductHienCo));
+}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProduct(SanPham sanPham, IFormFile? HinhAnhFile)
